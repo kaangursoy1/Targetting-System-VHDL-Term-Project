@@ -1,6 +1,8 @@
 # Targetting-System-VHDL-Term-Project
 
-The purpose of this project is designing a targeting system by using BASYS 3 FPGA board and Vivado VHDL. Since it is extracted from term project report, there are some alignment issues. It is created because University's database will not support projects that are made before 2020.
+The purpose of this project is designing a targeting system by using BASYS 3 FPGA board and Vivado VHDL. 
+Since it is extracted from term project report, there are some alignment issues. It is created because University's database 
+will not support projects that are made before 2020.
 
 # Constrain:
 
