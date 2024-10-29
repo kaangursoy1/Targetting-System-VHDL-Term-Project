@@ -1,0 +1,32 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity servoo is
+    Port (
+        clk    : in  std_logic;
+        rotate : in  std_logic_vector(6 downto 0);
+        sss    : out std_logic
+    );
+end servoo;
+
+architecture Behavioral of servoo is
+    signal switches: unsigned(7 downto 0);
+    signal count: unsigned(10 downto 0);
+
+begin
+    switches <= unsigned('0' & rotate);
+
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if count = 640 then
+                count <= (others => '0');
+            else
+                count <= count + 1;
+            end if;
+        end if;
+    end process;
+
+    sss <= '1' when (count < switches) else '0';
+end Behavioral;
