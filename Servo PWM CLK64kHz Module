@@ -1,0 +1,28 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity servo_pwm_clk64kHz is
+    Port (
+        clk    : in  std_logic;
+        reset  : in  std_logic;
+        rotate : in  std_logic_vector(6 downto 0);
+        sss    : out std_logic
+    );
+end servo_pwm_clk64kHz;
+
+architecture Behavioral of servo_pwm_clk64kHz is
+    component pulseconverter is
+        Port (
+            clk    : in  std_logic;
+            output : out std_logic
+        );
+    end component;
+
+    signal output : std_logic := '0';
+begin
+    pulseconverter_map: pulseconverter 
+        port map (
+            clk    => clk,
+            output => output
+        );
+end Behavioral;
