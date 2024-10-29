@@ -1,0 +1,27 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity pulseconverter is
+    Port (
+        clk    : in  std_logic;
+        output : out std_logic
+    );
+end pulseconverter;
+
+architecture Behavioral of pulseconverter is
+    signal temporary_reg: std_logic;
+    signal counter: integer range 0 to 780 := 0;
+begin
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if counter = 780 then
+                temporary_reg <= not temporary_reg;
+                counter <= 0;
+            else
+                counter <= counter + 1;
+            end if;
+        end if;
+    end process;
+    output <= temporary_reg;
+end Behavioral;
