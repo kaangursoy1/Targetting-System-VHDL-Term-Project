@@ -1,0 +1,38 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity colourgenerator is
+    Port (
+        clk     : in  STD_LOGIC;
+        rst     : in  STD_LOGIC;
+        heepos  : out integer;
+        veepos  : out integer;
+        heseync : out STD_LOGIC;
+        veseync : out STD_LOGIC;
+        disepon : out STD_LOGIC
+    );
+end colourgenerator;
+
+architecture Behavioral of colourgenerator is
+    constant hedisp : integer := 1440;
+    constant hefp   : integer := 80;
+    constant hesep  : integer := 152;
+    constant hebp   : integer := 232;
+    constant vedisp : integer := 900;
+    constant vefep  : integer := 1;
+    constant vesep  : integer := 3;
+    constant vebep  : integer := 28;
+
+    signal sighepos : integer := 0;
+    signal sigvepos : integer := 0;
+
+begin
+    horiz_pos_cnt: process(clk, rst)
+    begin
+        if rst = '1' then
+            sighepos <= 0;
+            sigvepos <= 0;
+        elsif rising_edge(clk) then
+            if sighepos = hedisp + hefp + hesep + hebp
