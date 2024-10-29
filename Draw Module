@@ -1,0 +1,50 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity draw is
+    Port (
+        clk       : in  std_logic;
+        rst       : in  std_logic;
+        hpos      : in  integer;
+        vpos      : in  integer;
+        imagebit  : in  std_logic;
+        imagepart : in  std_logic_vector(1 downto 0);
+        dispon    : in  std_logic;
+        Red       : out std_logic_vector(3 downto 0);
+        Green     : out std_logic_vector(3 downto 0);
+        Blue      : out std_logic_vector(3 downto 0)
+    );
+end draw;
+
+architecture Behavioral of draw is
+    signal w: std_logic_vector(2 downto 0);
+begin
+    w <= imagebit & imagepart;
+
+    process(rst, dispon, hpos, vpos, w)
+    begin
+        if rst = '1' then
+            Red   <= "0000";
+            Green <= "0000";
+            Blue  <= "0000";
+        elsif dispon = '1' then
+            if w = "111" then
+                if (hpos > 700 and hpos < 730 and vpos > 400 and vpos < 600) then
+                    Red <= "1111";
+                    Green <= "0000";
+                    Blue <= "0000";
+                else
+                    Red <= "0000";
+                    Green <= "0000";
+                    Blue <= "0000";
+                end if;
+            else
+                Red <= "0000";
+                Green <= "0000";
+                Blue <= "0000";
+            end if;
+        end if;
+    end process;
+end Behavioral;
