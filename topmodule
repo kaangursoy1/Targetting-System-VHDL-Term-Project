@@ -1,0 +1,97 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity topmodule is
+    Port (
+        clk      : in  STD_LOGIC;
+        rotate   : in  STD_LOGIC_VECTOR(6 downto 0);
+        rst      : in  STD_LOGIC;
+        Green    : out STD_LOGIC_VECTOR(3 downto 0);
+        shape    : in  STD_LOGIC;
+        Red      : out STD_LOGIC_VECTOR(3 downto 0);
+        veseync  : out STD_LOGIC;
+        color    : in  STD_LOGIC_VECTOR(1 downto 0);
+        heseync  : out STD_LOGIC;
+        Blue     : out STD_LOGIC_VECTOR(3 downto 0);
+        reset    : in  STD_LOGIC;
+        sss      : out STD_LOGIC
+    );
+end topmodule;
+
+architecture Behavioral of topmodule is
+    component colourgenerator is
+        Port (
+            clk     : in  std_logic;
+            rst     : in  std_logic;
+            hepeos  : out integer;
+            vepos   : out integer;
+            heseync : out std_logic;
+            veseync : out std_logic;
+            disepon : out std_logic
+        );
+    end component;
+
+    component draw is
+        Port (
+            clk     : in  std_logic;
+            rst     : in  std_logic;
+            hepos   : in  integer;
+            vepos   : in  integer;
+            disepon : in  std_logic;
+            shape   : in  STD_LOGIC;
+            color   : in  STD_LOGIC_VECTOR(1 downto 0);
+            Red     : out std_logic_vector(3 downto 0);
+            Green   : out std_logic_vector(3 downto 0);
+            Blue    : out std_logic_vector(3 downto 0)
+        );
+    end component;
+
+    component servo_pwm_clk64kHz is
+        Port (
+            clk    : in  STD_LOGIC;
+            reset  : in  STD_LOGIC;
+            rotate : in  STD_LOGIC_VECTOR(6 downto 0);
+            sss    : out STD_LOGIC
+        );
+    end component;
+
+    signal hpos: integer := 0;
+    signal vpos: integer := 0;
+    signal dispon: std_logic;
+
+begin
+    submodule1: colourgenerator
+        port map (
+            clk     => clk,
+            rst     => rst,
+            hepos   => hpos,
+            vepos   => vpos,
+            heseync => heseync,
+            veseync => veseync,
+            disepon => dispon
+        );
+
+    submodule2: draw
+        port map (
+            clk     => clk,
+            rst     => rst,
+            hepos   => hpos,
+            vepos   => vpos,
+            disepon => dispon,
+            shape   => shape,
+            color   => color,
+            Red     => Red,
+            Green   => Green,
+            Blue    => Blue
+        );
+
+    submodule3: servo_pwm_clk64kHz
+        port map (
+            clk    => clk,
+            reset  => reset,
+            rotate => rotate,
+            sss    => sss
+        );
+end Behavioral;
