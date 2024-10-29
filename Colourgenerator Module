@@ -35,4 +35,28 @@ begin
             sighepos <= 0;
             sigvepos <= 0;
         elsif rising_edge(clk) then
-            if sighepos = hedisp + hefp + hesep + hebp
+            if sighepos = hedisp + hefp + hesep + hebp then
+                sighepos <= 0;
+                if sigvepos = vedisp + vefep + vesep + vebep then
+                    sigvepos <= 0;
+                else
+                    sigvepos <= sigvepos + 1;
+                end if;
+            else
+                sighepos <= sighepos + 1;
+            end if;
+        end if;
+    end process;
+
+    heseync <= '1' when rst = '0' and sighepos >= hesep else '0';
+    veseync <= '1' when rst = '0' and sigvepos >= vesep else '0';
+    disepon <= '1' when rst = '0' and 
+                      sighepos >= hesep + hebp and 
+                      sighepos < hesep + hebp + hedisp and 
+                      sigvepos >= vesep + vebep and 
+                      sigvepos < vesep + vebep + vedisp else '0';
+
+    heepos <= sighepos;
+    veepos <= sigvepos;
+end Behavioral;
+
